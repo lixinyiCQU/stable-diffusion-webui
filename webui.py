@@ -8,6 +8,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from packaging import version
+import subprocess
+print('this version is designed for Google Colab, to test the GPU constantly when running the WebUI')
+print('--------------')
+
 
 import logging
 logging.getLogger("xformers").addFilter(lambda record: 'A matching Triton is not available' not in record.getMessage())
@@ -269,6 +273,8 @@ def webui():
 
         extra_networks.initialize()
         extra_networks.register_extra_network(extra_networks_hypernet.ExtraNetworkHypernet())
+        output = subprocess.check_output(['nvidia-smi'])
+        print(output.decode('utf-8'))
 
 
 if __name__ == "__main__":
